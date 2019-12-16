@@ -1,0 +1,210 @@
+{\rtf1\ansi\ansicpg1252\deff0{\fonttbl{\f0\fnil\fcharset0 Calibri;}{\f1\fnil\fcharset2 Symbol;}}
+{\*\generator Msftedit 5.41.21.2510;}\viewkind4\uc1\pard\sa200\sl276\slmult1\lang9\f0\fs24\par
+Gabriel Valachi\par
+Anthony Maas\par
+\pard\sa200\sl276\slmult1\qc\ul\b\fs28 Case Study - The Shootout\ulnone\b0\par
+\pard\sa200\sl276\slmult1\b\fs24 Note:\b0  This case study's \b Code Design\b0  and \b Flowchart\b0  are \i way\i0  out-of-date. We ran out of time and we couldn't update it.\b\par
+\pard\sa200\sl276\slmult1 Specification\b0\par
+The Shootout is a two-dimensional animated game/interactive story, programmed event-drivenly. The plotline goes like this:\par
+\pard\li720\sa200\sl276\slmult1 The player takes control of Slimy. Four people known as the Dalton Brothers - Slimy, Sneaky, Shifty, and Snitchy - are chased out of Millworth by the Earps - Marshall Vigil, Wyatt, Morgan, and Doc Holliday - and flee to the town of Sweaty Post.\par
+Upon arrival, they go to the Old West Saloon for a drink. Soon, however, they're met by Morgan with a few police officers. Slimy runs out of the saloon, but the other Dalton Bros are confused by his tactics and stay in place. As a result, they're arrested, while Slimy escapes.\par
+Later, Slimy attacks the prison where the other Daltons are being kept. He kills all the guards there and sets his buddies free. After that, they grab a hotel room and plan to rob the bank the next day.\par
+The following day, the Dalton Bros break into the bank, but there's no security. Sneaky, Shifty, and Snitchy grab as much money as they can carry, while Slimy (the player) holds off the incoming police. If any of the Dalton Bros die, the player must restart the mission.\par
+Once the Dalton Bros steal the money, they're met once again by the Earps. This time, they've also got the local police siding with them. The player needs to kill all the Earps in order to get the good ending, in which all surviving Dalton Bros escape Sweaty Post through the train station. If all the other Dalton Bros die, the player gets the bad ending, in which they're captured and executed by the Earps.\par
+\pard\sa200\sl276\slmult1 The game will have a mix of interactivity and cutscenes. In the cutscenes, the players can sit back and watch the show. Everywhere else, the player can walk around, shoot, etc.\par
+Levels, scripted sequences, and animations will be stored in and loaded from files. That way, we can edit them without the need to recompile the code, and to make minor edits quickly. The files, when used, will be loaded onto queues and executed one-by-one, with delays between them when necessary.\par
+Weapons present in the game are:\par
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li720\sa200\sl276\slmult1 Revolver. Not very accurate, but quick to draw, fire, and holster. 6 rounds. The player can pick guns up, and can swap their current gun for one with more ammo (or discard it if it's empty), since it's much faster than reloading.\par
+{\pntext\f1\'B7\tab}Double-barrel shotgun. Short range, but powerful. Two rounds.\par
+{\pntext\f1\'B7\tab}Pump-action rifle. More accurate than the revolver and shotgun, but has a slower rate of fire. Holds 4 rounds.\par
+\pard\sa200\sl276\slmult1 Note that the player can always carry many revolvers, but can only have either the shotgun or rifle (not both).\par
+Non-player characters are controlled by an artificial intelligence. They'll do things such as patrol when idle, strafe around when currently in combat, and take cover when needing to reload.\par
+\b Algorithm\b0\par
+Client\par
+\pard{\pntext\f0 1.\tab}{\*\pn\pnlvlbody\pnf0\pnindent0\pnstart1\pndec{\pntxta.}}
+\fi-360\li720\sa200\sl276\slmult1 Create the window and the content pane.\par
+{\pntext\f0 2.\tab}If the user clicks Exit, then do that.\par
+{\pntext\f0 3.\tab}If the user clicks Options, take them to the options menu. Here, they can adjust some settings such as sound effects and music, and it also shows the control scheme.\par
+{\pntext\f0 4.\tab}If the user clicks Start Game, prompt the user for the difficulty level and character.\par
+{\pntext\f0 5.\tab}Start the game.\par
+{\pntext\f0 6.\tab}Load the first map. From this point on, the next map will be loaded by the current map and the current map only.\par
+{\pntext\f0 7.\tab}Simulate the world every tick, unless the game's paused.\par
+{\pntext\f0 8.\tab}Update the mouse/crosshair.\par
+{\pntext\f0 9.\tab}Display the HUD, showing health and ammunition, if not in a cutscene and not displaying a still frame.\par
+{\pntext\f0 10.\tab}If the player clicks Escape while unpaused and not in a cutscene/still frame, pause the game and display the pause menu. If the player clicks the Resume Game button, resume the game. If they press Quit, quit the game.\par
+{\pntext\f0 11.\tab}If the player is in combat, transition to the map's combat track (if available).\par
+{\pntext\f0 12.\tab}If the player is being hunted down, transition to the map's stealth track (if available).\par
+{\pntext\f0 13.\tab}If neither step 11 nor step 12 are true, transition out of the current soundtrack.\par
+{\pntext\f0 14.\tab}If ambience is available for the current map, play a random one-shot ambient sound after a certain interval.\par
+{\pntext\f0 15.\tab}Repeat steps 7-14 for as long as the game is active.\par
+\pard\sa200\sl276\slmult1 World Simulation:\par
+\pard{\pntext\f0 1.\tab}{\*\pn\pnlvlbody\pnf0\pnindent0\pnstart1\pndec{\pntxta.}}
+\fi-360\li720\sa200\sl276\slmult1 Update all entities, and make them think. That means update NPCs' decisions, and move projectiles.\par
+{\pntext\f0 2.\tab}Detect NPC and object collisions, and mitigate them accordingly.\par
+{\pntext\f0 3.\tab}If an NPC is at zero health, kill it. Ie. create its body, play a dying sound, drop its weapon(s), and destroy the NPC itself. Same goes for smashable objects.\par
+{\pntext\f0 4.\tab}If the player presses the WASD keys, move around. W = fwd, A = lf, S = bk, D = rt. In doing that, scroll every object except the player.\par
+{\pntext\f0 5.\tab}If the player presses the number keys 0 (bare hands), 1 (handgun) or 2 (two-handed gun), equip/switch weapons.\par
+{\pntext\f0 6.\tab}If the player left-clicks, fire the currently drawn weapon, or punch if none is equipped.\par
+{\pntext\f0 7.\tab}If the player presses R, reload.\par
+{\pntext\f0 8.\tab}If the player presses E, swap their current two-handed weapon with one on the ground, if they're touching one.\par
+\pard\sa200\sl276\slmult1 NPC Decision Making\par
+\pard{\pntext\f0 1.\tab}{\*\pn\pnlvlbody\pnf0\pnindent0\pnstart1\pndec{\pntxta.}}
+\fi-360\li720\sa200\sl276\slmult1 Consider the current situation, such as its current state (idle, hunting, or hostile) and its current action.\par
+{\pntext\f0 2.\tab}Make a choice. The following are examples:\par
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li1080\sa200\sl276\slmult1 If they're out of ammo, take cover and reload.\par
+{\pntext\f1\'B7\tab}If they're not in combat, and they've lost sight of an enemy, head to the enemy's last known position. If they're not at the LKP, hunt for them.\par
+{\pntext\f1\'B7\tab}If they're in combat, strafe around and shoot at the enemy.\par
+{\pntext\f1\'B7\tab}If they're idle, patrol the map randomly.\par
+\pard\sa200\sl276\slmult1 Maps\par
+\pard{\pntext\f0 1.\tab}{\*\pn\pnlvlbody\pnf0\pnindent0\pnstart1\pndec{\pntxta.}}
+\fi-360\li720\sa200\sl276\slmult1 Get a current map.\par
+{\pntext\f0 2.\tab}If the mapname is null, assume that this is the end of the game - fade in to a "The End" slide, and quit the game.\par
+{\pntext\f0 3.\tab}Read the map script, and add them to an execution queue. Script details:\par
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li1080\sa200\sl276\slmult1 Commands:\par
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li1440\sa200\sl276\slmult1 "setbg <background>" - Sets the background, and the amount to scale it by.\par
+{\pntext\f1\'B7\tab}"setcollision <collision>" - Sets the collision image, and the amount to scale it by.\par
+{\pntext\f1\'B7\tab}"addambsnd <sound>" - Sets an ambient sound to be played at a certain interval.\par
+{\pntext\f1\'B7\tab}"setstealthmusic <sound>" - Sets the background music to be played when the player's not in combat but there are enemies nearby, or when enemies are searching for the player.\par
+{\pntext\f1\'B7\tab}"setcombatmusic <sound>" - Sets the background music to be played when the player's in combat.\par
+{\pntext\f1\'B7\tab}"cutscene" - Player's not in control, hide HUD and disable AI.\par
+{\pntext\f1\'B7\tab}"combat" - Player's in control, show HUD and enable AI.\par
+{\pntext\f1\'B7\tab}"endmap" - Ends the map and loads the next one. If there isn't another map to load, end the game.\par
+{\pntext\f1\'B7\tab}"createobj <type> <name> <x> <y> <health>" - Create an object with certain properties set.\par
+{\pntext\f1\'B7\tab}"destroyobj <name>" - Destroy an object.\par
+{\pntext\f1\'B7\tab}"sethealth <npc_name> <health" - Sets an NPC's health.\par
+{\pntext\f1\'B7\tab}"lookatent <name> <target> <should_do_it_smoothly> <rotatespeed>" - Points one entity to another.\par
+{\pntext\f1\'B7\tab}"lookat <name> <x> <y> <should_do_it_smoothly> <rotatespeed>" - Points an entity to a position.\par
+{\pntext\f1\'B7\tab}"movent <name> <x> <y> <angle> <should_do_it_smoothly> <mvspeed> <rotatespeed>" - Moves an entity to a position and rotation. Glides it or smoothly rotates it if <should_do_it_smoothly> is set to true.\par
+{\pntext\f1\'B7\tab}"speak <name>" - Writes text in cutscene mode, near the bottom of the frame.\par
+{\pntext\f1\'B7\tab}"wait <timeout>" - Waits for a certain amount of time, in seconds.\par
+{\pntext\f1\'B7\tab}"trigger <event>" - Triggers an event. This also works for making objects do things, by formatting the event as "<name>_<event>".\par
+{\pntext\f1\'B7\tab}"playsound <sound>" - Plays a sound.\par
+{\pntext\f1\'B7\tab}"loopsound <sound>" - Plays a sound and loops it continuously.\par
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li1080\sa200\sl276\slmult1 Custom events are added to a map with strings as keys and queues of instructions as values. They can be called as many times as wanted, unless they start with "oneshot_".\par
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li1440\sa200\sl276\slmult1 "ev_start <event>" - Declares an event. Can be related to the game mechanics, such as an NPC dying or something happening in the engine, or it can be custom and called within the script. Always executed asynchronously to the current script thread.\par
+{\pntext\f1\'B7\tab}"ev_end" - Terminates an event block.\par
+\pard\sa200\sl276\slmult1\b Code Design\b0\par
+NOTE: Due to the high number of variables, all of them are omitted from the code design. Instead, classes and their functions are mentioned.\par
+Update this when done the implementation!\par
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li720\sa200\sl276\slmult1 Utils class has a bunch of useful functions:\par
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li1080\sa200\sl276\slmult1 The program could potentially get annoyingly complex, so for that we'll have the Assert() static function. It checks if a condition is true, and if it's not then it'll throw an AssertionError. Since the program's event-driven, though, it won't crash the program in itself, so we're also going to display a notification in-game when it's called.\par
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li720\sa200\sl276\slmult1 Maps:\par
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li1080\sa200\sl276\slmult1 Class GameMap is a storage class for the map script commands.\par
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li1440\sa200\sl276\slmult1 m_qMainCmds - Commands to execute once the map is loaded.\par
+{\pntext\f1\'B7\tab}m_qEventCmds - Events to execute when triggered.\par
+{\pntext\f1\'B7\tab}Constructor( mainCmds, eventCmds ) - Initializes m_qMainCmds and m_qEventCmds.\par
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li1080\sa200\sl276\slmult1 Abstract class MapReader handles reading and executing map scripts. All subroutines are static.\par
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li1440\sa200\sl276\slmult1 readMap( String ) - Reads a map file with the name as an argument, and returns an object of type Map.\par
+{\pntext\f1\'B7\tab}executeMap( Map ) - Executes the input Map. Script commands are hard-coded in here.\par
+{\pntext\f1\'B7\tab}identifyMapsInDirectory( String ) - Searches for maps in the directory indicated by the string argument. Returns a stack of maps, in order of execution.\par
+{\pntext\f1\'B7\tab}levelSpecificJavaCode( String ) - Performs a hard-coded function in Java that can't be handled in a map script, such as randomly generating numbers. This also calls events in a map.\par
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li720\sa200\sl276\slmult1 Graphics:\par
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li1080\sa200\sl276\slmult1 The Swing API is used to draw pretty much everything.\par
+{\pntext\f1\'B7\tab}The window should be set to 1280x720 resolution, not resizable.\par
+{\pntext\f1\'B7\tab}Class GUIMenu is the main menu. Inherited from JPanel.\par
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li1440\sa200\sl276\slmult1 Constructor() - Creates the GUI and all its elements.\par
+{\pntext\f1\'B7\tab}paintComponent( Graphics ) - Repaints this GUI.\par
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li1080\sa200\sl276\slmult1 Class GUIScoreboard is the scoreboard at the end of the game, showing the player's score and what they did to earn it.\par
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li1440\sa200\sl276\slmult1 Constructor() - Creates the GUI and all its elements.\par
+{\pntext\f1\'B7\tab}drawScoreboard() - Animates the scoreboard and shows the player's scores.\par
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li1080\sa200\sl276\slmult1 Class GUIInGame is the in-game rendering of all the entities.\par
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li1440\sa200\sl276\slmult1 m_hBGImage - A JLabel that represents the background image.\par
+{\pntext\f1\'B7\tab}m_hCollisionImage - A JLabel that represents the collision data.\par
+{\pntext\f1\'B7\tab}Constructor() - Creates the GUI and all its elements.\par
+{\pntext\f1\'B7\tab}drawHUD() - Draws the heads-up display.\par
+{\pntext\f1\'B7\tab}drawCrosshair() - Draws the player's crosshair.\par
+{\pntext\f1\'B7\tab}drawWorld( Entity ) - Draws the world and all entities.\par
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li720\sa200\sl276\slmult1 Gameplay:\par
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li1080\sa200\sl276\slmult1 g_hAllEntities - Array of all entities in existence, in the game.\par
+{\pntext\f1\'B7\tab}g_hNodes - AI Nodes.\par
+{\pntext\f1\'B7\tab}Class NodeDef is a node to which an NPC can go to. Used for NPC pathfinding.\par
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li1440\sa200\sl276\slmult1 m_eType - The type of node (movement, cover, etc).\par
+{\pntext\f1\'B7\tab}m_iXPos, m_iYPos - Position of the node.\par
+{\pntext\f1\'B7\tab}Constructor( x, y, type ) - Initializes all of the above.\par
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li1080\sa200\sl276\slmult1 Abstract class BaseEntity is the basis for all entities.\par
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li1440\sa200\sl276\slmult1 m_szName - The name that other entities refer to this by.\par
+{\pntext\f1\'B7\tab}m_hIcon - The JLabel representation of the entity.\par
+{\pntext\f1\'B7\tab}m_iXPos, m_iYPos - X and Y coordinates, respectively.\par
+{\pntext\f1\'B7\tab}m_iHealth - How much health this entity has. -1 = infinite.\par
+{\pntext\f1\'B7\tab}m_iCollisionBoundsMin[], m_iCollisionBoundsMax[] - Minimum and maximum collision boundaries.\par
+{\pntext\f1\'B7\tab}m_bShouldDraw - Returns whether or not this entity should be drawn.\par
+{\pntext\f1\'B7\tab}Constructor( name, icon, x, y, health, collisionMin[], collisionMax[] ) - Initializes all the above.\par
+{\pntext\f1\'B7\tab}getName() - Returns the entity's name.\par
+{\pntext\f1\'B7\tab}getIcon() - Returns the entity's image.\par
+{\pntext\f1\'B7\tab}setIcon( JLabel ) - Sets the entity's image.\par
+{\pntext\f1\'B7\tab}getPosition() - Returns the entity's X- and Y-coordinates.\par
+{\pntext\f1\'B7\tab}setPosition() - Sets the entity's position.\par
+{\pntext\f1\'B7\tab}getHealth() - Gets the entity's health.\par
+{\pntext\f1\'B7\tab}setHealth( int ) - Sets the entity's health.\par
+{\pntext\f1\'B7\tab}shouldDraw() - Returns whether or not this should be drawn.\par
+{\pntext\f1\'B7\tab}setShouldDraw() - Set whether or not this entity should be drawn.\par
+{\pntext\f1\'B7\tab}(abstract) getClassname() - Returns the classname of this entity. Overridden by subclasses.\par
+{\pntext\f1\'B7\tab}handleCollisions() - Handles collisions with the world and other entities.\par
+{\pntext\f1\'B7\tab}throwEvent( String ) - Broadcasts an event. Map events can be triggered by this.\par
+{\pntext\f1\'B7\tab}(abstract) think() - Updates the entity. Different on a per-class basis.\par
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li1080\sa200\sl276\slmult1 Abstract class BaseCombatCharacter is the base class for NPCs and the player.\par
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li1440\sa200\sl276\slmult1 m_hRelationships - Array indicating the relationships between this NPC and others.\par
+{\pntext\f1\'B7\tab}m_hInventory - The NPC's weapons.\par
+{\pntext\f1\'B7\tab}Constructor( name, icon, x, y, collisionMin, collisionMax, relationships) - Initializes and creates the entity.\par
+{\pntext\f1\'B7\tab}think() - Make the AI think.\par
+{\pntext\f1\'B7\tab}getNearestNode( type ) - Gets the nearest node. I think we can do this using an interpolation search.\par
+{\pntext\f1\'B7\tab}die() - Called when this NPC dies.\par
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li1080\sa200\sl276\slmult1 Class DaltonBro represents one of the player's allies.\par
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li1440\sa200\sl276\slmult1 Hostile toward Earp instances.\par
+{\pntext\f1\'B7\tab}m_bIsPlayer - Whether or not this is a player.\par
+{\pntext\f1\'B7\tab}Constructor( name, icon, x, y, collisionMin, collisionMax ) - Initializes all the variables.\par
+{\pntext\f1\'B7\tab}think() - If this is a player, act based on the player's control. Otherwise, use the AI.\par
+{\pntext\f1\'B7\tab}(override) getClassname() - "npc_daltonbro"\par
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li1080\sa200\sl276\slmult1 Class Earp represents one of the player's hostiles.\par
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li1440\sa200\sl276\slmult1 Hostile toward DaltonBro instances.\par
+{\pntext\f1\'B7\tab}Constructor( name, icon, x, y, collisionMin, collisionMax ) - Initializes all the variables.\par
+{\pntext\f1\'B7\tab}(override) getClassname() - "npc_earp"\par
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li1080\sa200\sl276\slmult1 Class Civilian represents a civilian.\par
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li1440\sa200\sl276\slmult1 Afraid of DaltonBro and Earp instances.\par
+{\pntext\f1\'B7\tab}Constructor( name, icon, x, y, collisionMin, collisionMax ) - Initializes all the variables.\par
+{\pntext\f1\'B7\tab}(override) getClassname() - "npc_earp"\par
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li1080\sa200\sl276\slmult1 Class Projectile is the projectile that weapons fire. Used for all weapons.\par
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li1440\sa200\sl276\slmult1 m_iDamage - This projectile's damage.\par
+{\pntext\f1\'B7\tab}m_iSpeed - This projectile's speed.\par
+{\pntext\f1\'B7\tab}Constructor( x, y, damage, speed, angle ) - Initializes all the above.\par
+{\pntext\f1\'B7\tab}think() - Updates the projectile position.\par
+{\pntext\f1\'B7\tab}(override) getClassname() - "projectile"\par
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li1080\sa200\sl276\slmult1 Abstract class BaseCombatWeapon is the base class for weapons.\par
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li1440\sa200\sl276\slmult1 m_iMinDamage - The minimum damage this weapon deals.\par
+{\pntext\f1\'B7\tab}m_iMaxDamage - The maximum damage this weapon deals.\par
+{\pntext\f1\'B7\tab}m_iBaseAccuracy - The base accuracy of the weapon. The lower this value, the more accurate the weapon.\par
+{\pntext\f1\'B7\tab}m_iRecoil - The recoil of this weapon, ie. how wider the crosshair gets when the player fires.\par
+{\pntext\f1\'B7\tab}m_iROF - Rate of fire.\par
+{\pntext\f1\'B7\tab}m_iCurAmmo - Current ammunition.\par
+{\pntext\f1\'B7\tab}(constant) m_iMaxAmmo - Magazine size.\par
+{\pntext\f1\'B7\tab}m_iExtraAmmo - Stored ammunition.\par
+{\pntext\f1\'B7\tab}Constructor( name, icon, x, y, minDamage, maxDamage, accuracy, recoil, ROF, curAmmo, maxAmmo ) - Initializes all variables.\par
+{\pntext\f1\'B7\tab}getBaseAccuracy() - Gets the base accuracy of this weapon.\par
+{\pntext\f1\'B7\tab}getRecoil() - Gets the recoil of this weapon.\par
+{\pntext\f1\'B7\tab}getCurrentRecoil() - Gets the current recoil angular offset this weapon suffers from.\par
+{\pntext\f1\'B7\tab}getCurrentAmmo() - Gets the ammunition currently loaded in the gun.\par
+{\pntext\f1\'B7\tab}getMaxAmmo() - Gets the maximum ammunition loaded in the gun.\par
+{\pntext\f1\'B7\tab}fire() - Shoots a projectile.\par
+{\pntext\f1\'B7\tab}reload() - Reloads the gun.\par
+{\pntext\f1\'B7\tab}drop() - Drops the gun on the ground.\par
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li1080\sa200\sl276\slmult1 Class Revolver is a revolver.\par
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li1440\sa200\sl276\slmult1 Constructor( name, x, y, curAmmo ) - Initializes all the variables.\par
+{\pntext\f1\'B7\tab}(override) getClassname() - "weapon_revolver"\par
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li1080\sa200\sl276\slmult1 Class SuperShotgun is a double-barrel shotgun.\par
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li1440\sa200\sl276\slmult1 Constructor( name, x, y, curAmmo ) - Initializes all the variables.\par
+{\pntext\f1\'B7\tab}(override) think() - Allows this gun to be fired semi-automatically.\par
+{\pntext\f1\'B7\tab}(override) fire() - Shoots a barrage of projectiles.\par
+{\pntext\f1\'B7\tab}(override) getClassname() - "weapon_ssg"\par
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li1080\sa200\sl276\slmult1 Class Rifle is a pump-action rifle.\par
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li1440\sa200\sl276\slmult1 Constructor( name, x, y, curAmmo ) - Initializes all the variables.\par
+{\pntext\f1\'B7\tab}(override) think() - Allows this gun to be fired semi-automatically.\par
+{\pntext\f1\'B7\tab}(override) getClassname() - "weapon_revolver"\par
+\pard\sa200\sl276\slmult1\b Implementation\b0\par
+Far too long and annoying to paste here. See the source code in the same directory as this.\par
+\b Testing and Debugging\b0\par
+This is a list of known issues in the program that could be circumvented, but not fixed \i per se\i0 :\par
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li720\sa200\sl276\slmult1 Lags a LOT if some other processes are present, such as a YouTube video player.\par
+{\pntext\f1\'B7\tab}Some resources may fail to load on time, and load later into the program's execution or not at all. This can sometimes stall the program. Can be circumvented\par
+\pard\sa200\sl276\slmult1\fs22\par
+}
+ 

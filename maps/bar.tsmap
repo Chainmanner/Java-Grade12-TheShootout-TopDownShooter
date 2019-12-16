@@ -1,0 +1,209 @@
+setbg materials/levels/bar.png
+movent player 0 0 0 false
+noscroll
+startblack true
+
+loopsound ambient/drone4lp.wav
+addambsnd ambient/rats1.wav
+addambsnd ambient/rats2.wav
+addambsnd ambient/rats3.wav
+addambsnd ambient/rats4.wav
+
+cutscene
+createobj daltonbro sneaky 1000 0 666
+createobj daltonbro shifty -1000 0 666
+createobj daltonbro snitchy 0 1000 666
+
+createobj earp morgan 0 -1000 666
+createobj police cop1 1000 1000 666
+createobj police cop2 1000 -1000 666
+createobj police cop3 -1000 1000 666
+
+movent player 1000 1000 0 false
+sethealth player 666
+fadein
+wait 1000
+trigger mvplayer
+wait 2000
+trigger mvsneaky
+wait 2000
+trigger mvshifty
+wait 2000
+trigger mvsnitchy
+wait 7000
+speak You: I'll have the Signature Sweat whiskey, please.
+lookatent shifty snitchy true 3
+lookatent snitchy shifty true 3
+wait 1000
+speak  
+movent morgan -400 0 0 false
+wait 2000
+speak Snitchy: So... they got a bank here?
+movent morgan -240 184 0 true 2000 1
+lookat morgan -240 184 true 2
+wait 1500
+speak  
+wait 500
+speak Shifty: Dude, not here! You're gonna get us killed.
+movent cop3 -400 0 0 false
+movent cop3 -310 -200 0 true 2000 1
+wait 1500
+speak  
+wait 500
+speak Snitchy: Like we're not already dead. The Earps'll find us eventually.
+movent morgan 56 184 0 true 3000 1
+lookat morgan 56 184 false 1
+movent cop2 -400 0 0 false
+movent cop2 -378 88 0 true 2000 1
+wait 2500
+speak  
+wait 500
+speak Shifty: Not yet we aren't. We might be able to escape them.
+movent cop1 -400 0 0 false
+movent cop1 -378 -112 0 true 2000 1
+wait 1500
+speak  
+wait 500
+speak Snitchy Yeah, right. I bet there's one of those bastards right here, sticking a gun to Sneaky's head...
+movent morgan 232 112 0 true 4000 1
+lookat morgan 232 112 false 1
+wait 3500
+speak  
+wait 500
+lookat morgan 232 0 true 2
+createobj revolver morgan 231 112 100
+wait 1000
+playsound weapons/reloadcompactft.wav
+showframe materials/frames/BarStart.png
+wait 2000
+hideframe
+lookatent shifty morgan true 3
+lookatent sneaky morgan true 3
+lookatent player morgan true 3
+wait 1500
+speak You: Oh, not you again...
+wait 2000
+speak Morgan: Yeah. Me.
+wait 500
+speak  
+wait 2000
+speak You: You know, Morgan...
+wait 1000
+speak  
+wait 500
+speak You: When my guys and your guys got ready to fight, there was something I wanted to tell you...
+wait 3000
+speak  
+playsound music/levmusic23.wav
+wait 1500
+speak You: And what I was going to say was...
+wait 1500
+speak  
+movent player -400 0 180 true 1500 1
+lookat cop1 -400 0 true 11
+lookat cop2 -400 0 true 11
+lookat cop3 -400 0 true 11
+lookat shifty -400 0 true 11
+lookat snitchy -400 0 true 11
+lookat sneaky -400 0 true 11
+lookat morgan -400 0 true 11
+playsound engineer_paincrticialdeath02.wav
+wait 1750
+movent player -1000 0 0 false
+wait 5000
+movent player -400 0 0 false
+speak You: What the hell, guys? Move!
+wait 1500
+speak  
+createobj revolver cop1 1001 0 100
+createobj revolver cop2 1002 0 100
+createobj revolver cop3 1002 0 100
+wait 1000
+speak You: Uh oh.
+wait 1000
+trigger cop1_spam
+trigger cop2_spam
+trigger cop3_spam
+movent player -1000 0 0 false
+wait 1000
+showframe materials/frames/playerBarEscape.png
+wait 2000
+showframe materials/frames/PoliceCatch.png
+wait 2000
+fadeout
+hideframe
+speak  
+endmap prison
+
+ev_start mvplayer
+movent player -400 0 0 false
+movent player -265 28 0 true 2000 1
+lookat player -265 28 true 1
+wait 2000
+movent player 232 16 0 true 4000 1
+lookat player 232 16 true 1
+ev_end
+
+ev_start mvsneaky
+movent sneaky -400 0 0 false
+movent sneaky -265 28 0 true 2000 1
+lookat sneaky -265 28 true 1
+wait 2000
+movent sneaky 232 64 0 true 4000 1
+lookat sneaky 232 64 true 1
+ev_end
+
+ev_start mvshifty
+movent shifty -400 0 0 false
+movent shifty -265 28 0 true 2000 1
+lookat shifty -265 28 true 1
+wait 2000
+movent shifty 50 36 0 true 3250 1
+lookat shifty 50 36 true 1
+wait 3250
+movent shifty 232 -32 0 true 1250 1
+lookat shifty 232 -32 true 1
+ev_end
+
+ev_start mvsnitchy
+movent snitchy -400 0 0 false
+movent snitchy -256 -104 0 true 2000 1
+wait 2000
+movent snitchy 232 -80 0 true 4000 1
+lookat snitchy 232 -80 true 1
+ev_end
+
+ev_start cop1_spam
+invokenpcaction cop1 attack
+wait 250
+invokenpcaction cop1 attack
+wait 250
+invokenpcaction cop1 attack
+wait 250
+invokenpcaction cop1 attack
+wait 250
+invokenpcaction cop1 attack
+ev_end
+
+ev_start cop2_spam
+wait 100
+invokenpcaction cop2 attack
+wait 250
+invokenpcaction cop2 attack
+wait 250
+invokenpcaction cop2 attack
+wait 250
+invokenpcaction cop2 attack
+wait 250
+invokenpcaction cop2 attack
+wait 250
+invokenpcaction cop2 attack
+ev_end
+
+
+ev_start cop3_spam
+wait 100
+invokenpcaction cop3 attack
+wait 250
+invokenpcaction cop3 attack
+ev_end

@@ -1,0 +1,208 @@
+setbg materials/levels/escape.png
+
+addambsnd ambient/wind_snippet1.wav
+addambsnd ambient/wind_snippet2.wav
+addambsnd ambient/wind_snippet3.wav
+addambsnd ambient/wind_snippet4.wav
+addambsnd ambient/wind_snippet5.wav
+loopsound ambient/tone_alley.wav
+noscroll
+cutscene
+createobj earp marshall -800 40 666
+createobj earp wyatt -800 80 666
+createobj earp morgan -800 -40 666
+createobj earp doc -800 -80 666
+createobj rifle marshall -800 39 100
+createobj daltonbro sneaky -800 0 666
+createobj daltonbro shifty -900 72 666
+createobj daltonbro snitchy -900 -72 666
+sethealth player 666
+startblack true
+showframe materials/frames/TitleCardStart.png
+fadein
+wait 1000
+fadeout
+showframe materials/frames/escape.png
+fadein
+wait 2000
+movent player -700 0 0 false
+hideframe
+wait 500
+movent player 0 0 0 true 4000 1
+movent sneaky -100 0 0 true 6000 1
+movent shifty -200 72 0 true 5000 1
+movent snitchy -200 -72 0 true 7000 1
+wait 4500
+movent player 0 0 180 true 1 2
+speak You: Everybody alright?
+wait 3000
+lookatent snitchy player true 3
+lookatent shifty player true 5
+speak Shifty: I think we're in the clear now.
+wait 2000
+speak  
+fadeout
+showframe materials/frames/DaltonIntro.png
+fadein
+wait 2000
+fadeout
+hideframe
+fadein
+wait 1000
+lookat player -100 0 true 5
+speak Sneaky: Well, now what? We sure can't go back and say sorry...
+wait 1500
+speak You: Then we just keep moving forward. Come on!
+wait 3000
+lookatent snitchy marshall true 2
+wait 500
+playsound music/levmusic23.wav
+speak Snitchy: Ah, crap! Here they come!
+invokenpcaction marshall attack
+lookatent shifty marshall true 1
+lookatent sneaky marshall true 1
+wait 1000
+speak You: Damn it, they're coming! Let's go!
+wait 250
+movent player 800 0 0 true 3000 1
+wait 100
+movent snitchy 800 -72 0 true 3000 1
+movent shifty 800 72 0 true 3000 1
+movent sneaky 800 0 0 true 3000 1
+wait 1000
+speak  
+movent marshall -70 25 0 true 4000 1
+movent wyatt -100 80 0 true 5000 1
+movent morgan -100 -40 0 true 4500 1
+movent doc -80 -80 0 true 5500 1
+wait 3000
+invokenpcaction marshall attack
+wait 100
+speak Marshall Virgil: Damn it, they're getting away!
+wait 1500
+fadeout
+speak  
+showframe materials/frames/EarpIntro.png
+fadein
+wait 2000
+fadeout
+hideframe
+fadein
+speak 
+wait 1000
+speak Marshall Virgil: Damn bandits.
+wait 2000
+lookatent doc marshall true 3
+speak Doc Holliday: So what do we do when we get to them?
+wait 2500
+lookatent marshall doc true 3
+speak Marshall Virgil: Are you really asking me that?
+wait 1000
+speak  
+invokenpcaction marshall reload
+wait 500
+speak Marshall Virgil: You're supposed to shoot them, you idiot!
+wait 1000
+lookatent wyatt marshall true 3
+speak Wyatt: But Marshall...
+wait 500
+lookatent marshall wyatt true 3
+speak 
+wait 250
+speak Wyatt: How do we shoot somebody if we're out of bullets?
+wait 2500
+speak Wyatt: And you've only got two rounds left in that rifle...
+wait 2000
+speak  
+wait 1000
+invokenpcaction marshall holsterwpn
+speak Marshall Virgil: I guess you're right.
+wait 1000
+movent marshall -70 25 0 true 1 3
+speak  
+wait 1500
+speak Marshall Virgil: But it's a small world.
+wait 2000
+movent marshall -50 25 0 true 1000 1
+speak Marshall Virgil: And out here, there's only one other place they can go to...
+wait 3000
+fadeout
+speak  
+setbg materials/levels/enterPost.png
+destroyobj marshall
+destroyobj wyatt
+destroyobj morgan
+destroyobj doc
+movent player -800 0 0 false
+movent snitchy -800 -72 0 false
+movent shifty -800 72 0 false
+movent sneaky -800 64 0 false
+fadein
+movent player 200 0 0 true 6000 1
+movent snitchy 150 -64 0 true 5500 1
+movent shifty 125 -104 0 true 6500 1
+movent sneaky 125 64 0 true 7000 1
+wait 8000
+speak You: *pant*
+wait 1000
+speak  
+wait 1000
+movent player 200 0 180 true 1 2
+speak You: NOW I think they're gone.
+wait 1500
+speak  
+movent shifty 125 -104 180 true 1 1
+wait 1000
+speak Shifty: You got that right...
+wait 2000
+speak  
+wait 1000
+lookatent shifty player true 2
+speak Shifty: I can't see the Earps for miles...
+wait 1500
+speak  
+wait 500
+lookatent snitchy player true 3
+speak Snitchy: So, what now, Slimy?
+wait 2000
+speak  
+wait 500
+lookat player 432 -104 true 2
+speak You: Well, first off... where are we?
+wait 1000
+movent player 432 -104 0 true 3000 1
+lookat player 432 -104 false 1
+wait 3000
+lookatent sneaky player true 2
+lookatent shifty player true 3
+lookat player 432 -105 true 2
+lookat snitchy 432 -125 true 3
+wait 500
+speak  
+wait 1000
+showframe materials/frames/enterPost.png
+wait 2000
+hideframe
+wait 1000
+speak You: Sweaty Post...
+wait 1500
+speak  
+wait 500
+speak You: The guys here make the best whiskey.
+wait 2000
+speak  
+lookat player 200 0 true 2
+wait 1000
+lookat player 433 -104 true 3
+speak You: I say we go have a drink. It's been a long day.
+wait 2000
+speak  
+wait 1500
+movent player 800 -104 0 true 5000 1
+wait 1000
+movent snitchy 800 -64 0 true 5500 1
+movent sneaky 800 64 0 true 6500 1
+movent shifty 800 -104 0 true 6000 1
+wait 7000
+fadeout
+endmap bar

@@ -1,0 +1,76 @@
+setbg testA.jpg
+setcollision testA_Collision3.jpg
+createnode 0 -100 0 path
+createnode 1 340 -64 path
+createnode 2 -170 100 cover
+createnode 3 -250 -100 path
+createnode 4 350 80 path
+createnode 5 200 -300 path
+createnode 6 0 0 path
+linknodes 0 1
+linknodes 1 2
+linknodes 2 3
+linknodes 3 4
+linknodes 4 5
+linknodes 5 6
+linknodes 6 0
+
+addambsnd ambient/train_horn_distant1.wav
+addambsnd ambient/rats1.wav
+addambsnd ambient/rats2.wav
+addambsnd ambient/rats3.wav
+addambsnd ambient/rats4.wav
+addambsnd ambient/wind_snippet1.wav
+addambsnd ambient/wind_snippet2.wav
+addambsnd ambient/wind_snippet3.wav
+addambsnd ambient/wind_snippet4.wav
+addambsnd ambient/wind_snippet5.wav
+cutscene
+startblack true
+fadein
+createobj earp dummy -64.0 -64.0 100
+createobj rifle dummy -64.0 -64.5 100
+invokenpcaction dummy equipwpn
+speak Hello, Chainmanner.
+wait 1000
+movent player 0 0 -135 true 1 5
+invokenpcaction dummy attack
+speak ...you!
+wait 1000
+speak  
+wait 1000
+fadeout
+showframe materials/frames/TitleCardStart.png
+fadein
+wait 1000
+fadeout
+hideframe
+fadein
+speak Yeah. Me.
+wait 1000
+combat
+loopsound ambient/tone_alley.wav
+trigger giveweapons
+trigger deadcode
+
+ev_start deadcode
+setstealthmusic music/darkness_boat_assault_hunting.wav
+setcombatmusic music/darkness_boat_assault_hostile.wav
+ev_end
+
+ev_start dummy_fire
+playsound music/levmusic23.wav
+ev_end
+
+ev_start dummy_die
+wait 15000
+stoploopingsounds
+fadeout
+endmap start
+ev_end
+
+ev_start giveweapons
+createobj revolver player 0 1 100
+createobj revolver player 1 0 100
+createobj revolver player 1 1 100
+ev_end

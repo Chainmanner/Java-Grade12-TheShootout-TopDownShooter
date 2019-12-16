@@ -1,0 +1,218 @@
+createnode 0 -345 -160 path
+createnode 1 -345 -50 path
+createnode 2 -345 96 path
+createnode 3 -470 -50 path
+createnode 4 -470 220 path
+createnode 5 -160 220 path
+createnode 6 -160 150 path
+createnode 7 -160 -220 path
+createnode 8 -160 -270 path
+createnode 9 -470 -270 path
+createnode 10 395 -205 path
+createnode 11 395 180 path
+createnode 12 -430 25 cover
+createnode 13 -430 -90 cover
+createnode 14 -400 -40 cover
+createnode 15 -360 25 cover
+createnode 16 -360 -90 cover
+createnode 17 -430 150 cover
+createnode 18 -430 -200 cover
+createnode 19 -390 -250 cover
+createnode 20 -275 -250 cover
+createnode 21 -390 200 cover
+createnode 22 -275 200 cover
+createnode 23 -220 150 cover
+createnode 24 -220 -200 cover
+createnode 25 -40 -180 cover
+createnode 26 -40 130 cover
+createnode 27 370 130 cover
+createnode 28 370 -180 cover
+createnode 29 -85 -130 cover
+createnode 30 -85 75 cover
+linknodes 0 1
+linknodes 1 2
+linknodes 1 3
+linknodes 3 4
+linknodes 4 5
+linknodes 5 6
+linknodes 6 7
+linknodes 7 8
+linknodes 8 9
+linknodes 9 3
+linknodes 7 10
+linknodes 6 11
+linknodes 1 14
+linknodes 3 14
+linknodes 0 16
+linknodes 1 16
+linknodes 1 15
+linknodes 2 15
+linknodes 2 16
+linknodes 0 15
+linknodes 3 13
+linknodes 3 18
+linknodes 3 12
+linknodes 3 17
+linknodes 9 12
+linknodes 9 13
+linknodes 9 17
+linknodes 9 18
+linknodes 9 19
+linknodes 9 20
+linknodes 8 19
+linknodes 8 20
+linknodes 8 24
+linknodes 8 23
+linknodes 8 25
+linknodes 4 18
+linknodes 4 13
+linknodes 4 12
+linknodes 4 17
+linknodes 4 21
+linknodes 4 22
+linknodes 7 24
+linknodes 7 25
+linknodes 7 28
+linknodes 7 23
+linknodes 10 28
+linknodes 10 25
+linknodes 10 24
+linknodes 11 27
+linknodes 11 26
+linknodes 11 23
+linknodes 6 23
+linknodes 6 24
+linknodes 6 26
+linknodes 6 27
+linknodes 5 23
+linknodes 5 26
+linknodes 5 27
+linknodes 5 22
+linknodes 5 21
+linknodes 5 24
+linknodes 8 29
+linknodes 8 30
+linknodes 7 29
+linknodes 7 30
+linknodes 6 29
+linknodes 6 30
+linknodes 5 29
+linknodes 5 30
+
+setbg materials/levels/jail.png
+setcollision materials/levels/jail_collisions.png
+
+cutscene
+startblack true
+createobj daltonbro sneaky 162 16 100
+createobj daltonbro shifty 200 44 100
+createobj daltonbro snitchy 225 22 100
+invokenpcaction sneaky disableai
+invokenpcaction shifty disableai
+invokenpcaction snitchy disableai
+
+loopsound music/loop_deep_01.wav
+addambsnd ambient/rats1.wav
+addambsnd ambient/rats2.wav
+addambsnd ambient/rats3.wav
+addambsnd ambient/rats4.wav
+
+createobj dbshotgun null -345 95 100
+createobj dbshotgun null -345 96 100
+createobj revolver player -345 -161 100
+createobj revolver player -345 -159 100
+createobj revolver player -345 -158 100
+createobj revolver player -345 -157 100
+
+movent player -345 -160 90 false
+showframe materials/frames/info1.png
+fadein
+wait 5000
+fadeout
+showframe materials/frames/info2.png
+fadein
+wait 5000
+createobj police cop1 -133 -193 100
+createobj police cop2 -155 165 100
+createobj police cop3 305 -204 100
+createobj dbshotgun cop1 0 0 100
+createobj revolver cop2 0 1 100
+createobj rifle cop3 1 0 100
+fadeout
+hideframe
+fadein
+speak You: I gotta get my buddies out of here...
+wait 2000
+speak  
+wait 500
+speak You: Good think I've got this hack-saw.
+wait 2000
+speak  
+fadeout
+showframe materials/frames/jailStart.png
+fadein
+wait 2000
+fadeout
+hideframe
+fadein
+combat
+
+setstealthmusic music/darkness_boat_assault_hunting.wav
+setcombatmusic music/darkness_boat_assault_hostile.wav
+
+ev_start allcopsdead
+fadeout
+notrack
+destroyobj cop1
+destroyobj cop2
+destroyobj cop3
+cutscene
+movent player 186 139 -90 false
+fadein
+speak You: Hang on, guys! I'll get you out of there!
+wait 2000
+speak  
+wait 500
+fadeout
+showframe materials/frames/jailBreak.png
+fadein
+wait 500
+fadeout
+hideframe
+movent player 195 201 -90 false
+movent sneaky 118 132 0 false
+lookatent sneaky player false 1
+movent shifty 195 131 0 false
+lookatent shifty player false 1
+movent snitchy 245 135 0 false
+lookatent snitchy player false 1
+fadein
+speak Sneaky: So what now, boss?
+wait 2000
+speak  
+wait 500
+lookatent player sneaky true 3
+speak You: I don't know. This is about as much of the RST as we could get done.
+wait 2000
+speak  
+wait 500
+speak You: Sorry, Mr. Bujaki.
+wait 2000
+speak  
+wait 500
+fadeout
+endmap
+ev_end
+
+ev_start player_fire
+lookatent cop1 player true 1
+lookatent cop2 player true 1
+lookatent cop3 player true 1
+ev_end
+
+ev_start player_die
+notrack
+wait 3000
+fadeout
+endmap prison
+ev_end
